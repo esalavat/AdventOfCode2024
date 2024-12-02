@@ -29,6 +29,38 @@ function part1(input: string){
     return sum;
 }
 
+function part2(input: string) {
+    const lines = input.split('\n');
+
+    let list1: Array<string> = [];
+    let list2Counts: { [key: string]: number } = {};
+
+    for (const line of lines) {
+        const cols = line.split(/\s+/); //split on any number of spaces
+
+        if(cols.length === 2) {
+            list1.push(cols[0]);
+            
+            const num2 = cols[1];
+            if(num2 in list2Counts) {
+                list2Counts[num2]++;
+            } else {
+                list2Counts[num2] = 1;
+            }
+        }
+    }
+
+    let sum: number = 0;
+
+    for(const num1 of list1) {
+        if(num1 in list2Counts) {
+            sum += parseInt(num1) * list2Counts[num1];
+        }
+    }
+    
+    return sum;
+}
+
 const filename = !debug ? 'src/01/input.txt' : 'src/01/example.txt';
 
 fs.readFile(filename, 'utf-8', (err, data) => {
@@ -37,4 +69,5 @@ fs.readFile(filename, 'utf-8', (err, data) => {
     }
 
     console.log('part1:', part1(data));
+    console.log('part2:', part2(data));
 });
